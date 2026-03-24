@@ -74,8 +74,10 @@ export function InvitePage({ guest, existingRsvp }: Props) {
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 150]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
-  const { bride, groom, date, time, venue, address, mapLink, schedule, dressCode } =
-    weddingConfig;
+  const {
+    brideGenitive, groomGenitive,
+    date, time, venue, address, mapLink, schedule, dressCode,
+  } = weddingConfig;
 
   async function handleSubmit() {
     if (attending === null) return;
@@ -152,16 +154,16 @@ export function InvitePage({ guest, existingRsvp }: Props) {
             transition={{ delay: 0.6, duration: 1, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="font-display text-6xl md:text-8xl lg:text-9xl font-light text-wedding-charcoal leading-[0.9]"
           >
-            {bride}
+            {groomGenitive}
             <motion.span
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.2, duration: 0.6 }}
               className="block text-3xl md:text-4xl font-accent text-wedding-gold my-4 tracking-[0.3em]"
             >
-              &
+              и
             </motion.span>
-            {groom}
+            {brideGenitive}
           </motion.h1>
 
           <motion.div
@@ -276,7 +278,7 @@ export function InvitePage({ guest, existingRsvp }: Props) {
           </p>
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-8 top-0 bottom-0 w-px bg-wedding-gold/20" />
+            <div className="absolute left-[5px] top-0 bottom-0 w-px bg-wedding-gold/20" />
 
             {schedule.map((item, i) => (
               <motion.div
@@ -285,15 +287,19 @@ export function InvitePage({ guest, existingRsvp }: Props) {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.6 }}
-                className="relative flex items-start gap-8 mb-10 last:mb-0"
+                className="relative flex items-start gap-6 mb-10 last:mb-0"
               >
                 {/* Timeline dot */}
-                <div className="relative z-10 w-16 flex-shrink-0 text-right">
+                <div className="relative z-10 flex-shrink-0 w-[11px] pt-1.5">
+                  <div className="w-2.5 h-2.5 rounded-full bg-wedding-gold/40 border-2 border-wedding-cream" />
+                </div>
+                {/* Time */}
+                <div className="flex-shrink-0">
                   <span className="font-accent text-sm tracking-wider text-wedding-gold">
                     {item.time}
                   </span>
                 </div>
-                <div className="absolute left-[31px] top-2 w-2.5 h-2.5 rounded-full bg-wedding-gold/40 border-2 border-wedding-cream" />
+                {/* Event */}
                 <div className="pt-0.5">
                   <p className="font-body text-xl text-wedding-charcoal">
                     {item.event}
@@ -463,7 +469,7 @@ export function InvitePage({ guest, existingRsvp }: Props) {
         >
           <div className="ornament">✦ ✦ ✦</div>
           <p className="font-display text-2xl font-light mt-6">
-            {bride} & {groom}
+            {groomGenitive} и {brideGenitive}
           </p>
           <p className="font-body text-wedding-muted">{date}</p>
           <p className="font-body text-sm text-wedding-muted/50 mt-8">

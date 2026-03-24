@@ -1,7 +1,9 @@
 export const weddingConfig = {
   // ——— Измени под себя ———
   bride: "Александра",
+  brideGenitive: "Александры",
   groom: "Виктор",
+  groomGenitive: "Виктора",
   date: "27 марта 2026",
   time: "12:00",
   venue: "РАГС Петродворцового района",
