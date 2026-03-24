@@ -104,7 +104,7 @@ export function InvitePage({ guest, existingRsvp }: Props) {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   const {
-    brideGenitive, groomGenitive,
+    brideGenitive, groomGenitive, groom, bride,
     date, time, venue, address, mapLink, schedule, dressCode,
   } = weddingConfig;
 
@@ -190,7 +190,7 @@ export function InvitePage({ guest, existingRsvp }: Props) {
               transition={{ delay: 1.2, duration: 0.6 }}
               className="block text-3xl md:text-4xl font-accent text-wedding-gold my-4 tracking-[0.3em]"
             >
-              и
+              &
             </motion.span>
             {brideGenitive}
           </motion.h1>
@@ -271,8 +271,8 @@ export function InvitePage({ guest, existingRsvp }: Props) {
           </p>
           <div className="my-10 space-y-2">
             <p className="font-display text-4xl md:text-5xl font-light">{date}</p>
-            <p className="font-accent text-lg tracking-[0.2em] text-wedding-gold">
-              в {time}
+            <p className="font-accent text-3xl font-bold md:text-4xl tracking-[0.2em] text-wedding-gold">
+              {time}
             </p>
           </div>
         </Section>
@@ -303,7 +303,7 @@ export function InvitePage({ guest, existingRsvp }: Props) {
         {/* ═══════ SCHEDULE ═══════ */}
         <Section className="my-20">
           <p className="font-accent tracking-[0.3em] uppercase text-wedding-muted text-xs mb-10 text-center">
-            Программа дня
+            Программа
           </p>
           <div className="relative">
             {/* Timeline line */}
@@ -324,13 +324,13 @@ export function InvitePage({ guest, existingRsvp }: Props) {
                 </div>
                 {/* Time */}
                 <div className="flex-shrink-0">
-                  <span className="font-accent text-sm tracking-wider text-wedding-gold">
+                  <span className="font-accent text-md font-semibold tracking-wider text-wedding-gold">
                     {item.time}
                   </span>
                 </div>
                 {/* Event */}
                 <div className="pt-0.5">
-                  <p className="font-body text-xl text-wedding-charcoal">
+                  <p className="font-body text-xl font-semibold text-wedding-charcoal">
                     {item.event}
                   </p>
                 </div>
@@ -563,7 +563,7 @@ export function InvitePage({ guest, existingRsvp }: Props) {
         >
           <div className="ornament">✦ ✦ ✦</div>
           <p className="font-display text-2xl font-light mt-6">
-            {groomGenitive} и {brideGenitive}
+            {groom} & {bride}
           </p>
           <p className="font-body text-wedding-muted">{date}</p>
           <p className="font-body text-sm text-wedding-muted/50 mt-8">
