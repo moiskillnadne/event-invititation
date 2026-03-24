@@ -19,7 +19,7 @@ export const weddingConfig = {
   // Подарок — ненавязчивая секция
   gift: {
     enabled: true,
-    tinkoffCollectUrl: "https://www.tbank.ru/rm/r_xPSoCvWPwG.XmbQYLcWLx/QViEG83602/",
+    tinkoffCollectUrl: "https://tbank.ru/cf/2Oot7mz50qn",
     heading: "О подарках",
     text: "Лучший подарок для нас — это ваше присутствие и тёплые пожелания. Но если вы хотите сделать нам приятное, мы будем рады вашему вкладу.",
   },
