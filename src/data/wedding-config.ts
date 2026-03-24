@@ -3,7 +3,7 @@ export const weddingConfig = {
   bride: "Александра",
   brideGenitive: "Александры",
   groom: "Виктор",
-  groomGenitive: "Виктор",
+  groomGenitive: "Виктора",
   date: "27 марта 2026",
   time: "12:00",
   venue: "РАГС Петродворцового района",
@@ -19,11 +19,11 @@ export const weddingConfig = {
   // Подарок — ненавязчивая секция
   gift: {
     enabled: true,
-    tinkoffCollectUrl: "https://tbank.ru/cf/3wlZif6Zk1N",
+    tinkoffCollectUrl: "https://www.tbank.ru/rm/r_xPSoCvWPwG.XmbQYLcWLx/QViEG83602/",
     heading: "О подарках",
     text: "Лучший подарок для нас — это ваше присутствие и тёплые пожелания. Но если вы хотите сделать нам приятное, мы будем рады вашему вкладу.",
   },
 
   // Пароль для админ-панели (простая защита)
-  adminPassword: "wedding2026",
+  adminPassword: "wedding2703.",
 };
