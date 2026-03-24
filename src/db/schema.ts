@@ -4,6 +4,7 @@ export const guests = sqliteTable("guests", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   slug: text("slug").notNull().unique(),
   names: text("names").notNull(),
+  greeting: text("greeting"),
   description: text("description").notNull(),
   photo: text("photo"), // path relative to /public
   tableNumber: integer("table_number"),

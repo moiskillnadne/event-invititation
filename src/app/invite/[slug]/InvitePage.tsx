@@ -1,10 +1,29 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { weddingConfig } from "@/data/wedding-config";
-import { GiftSection } from "@/components/GiftSection";
 import type { Guest, RsvpResponse } from "@/db/schema";
+
+async function generateQrDataUrl(
+  text: string,
+  size = 200
+): Promise<string> {
+  try {
+    const QRCode = (await import("qrcode")).default;
+    return await QRCode.toDataURL(text, {
+      width: size,
+      margin: 0,
+      color: {
+        dark: "#2C2C2C",
+        light: "#00000000",
+      },
+      errorCorrectionLevel: "M",
+    });
+  } catch {
+    return "";
+  }
+}
 
 interface Props {
   guest: Guest;
@@ -65,6 +84,16 @@ export function InvitePage({ guest, existingRsvp }: Props) {
   const [guestCount, setGuestCount] = useState(existingRsvp?.guestCount ?? 1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(!!existingRsvp);
+  const [qrSrc, setQrSrc] = useState<string>("");
+
+  const { gift } = weddingConfig;
+  const paymentUrl = gift?.tinkoffCollectUrl || "";
+
+  useEffect(() => {
+    if (submitted && paymentUrl && gift?.enabled) {
+      generateQrDataUrl(paymentUrl, 280).then(setQrSrc);
+    }
+  }, [submitted, paymentUrl, gift?.enabled]);
 
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -221,7 +250,7 @@ export function InvitePage({ guest, existingRsvp }: Props) {
           )}
 
           <h2 className="font-display text-3xl md:text-4xl font-light mb-6">
-            Дорог{/ и |,/.test(guest.names) ? "ие" : "ой"}{" "}
+            {guest.greeting || (/ и |,/.test(guest.names) ? "Дорогие" : "Дорогой")}{" "}
             <span className="text-wedding-sage-dark">{guest.names}</span>!
           </h2>
 
@@ -353,11 +382,81 @@ export function InvitePage({ guest, existingRsvp }: Props) {
               <p className="font-display text-2xl mb-2">
                 {rsvp.attending ? "Ура! Ждём вас!" : "Очень жаль!"}
               </p>
-              <p className="font-body text-wedding-muted">
-                {rsvp.attending
-                  ? `Записано гостей: ${rsvp.guestCount}`
-                  : "Надеемся увидеть вас в другой раз"}
-              </p>
+
+              {gift?.enabled ? (
+                <p className="font-body text-lg text-wedding-muted leading-relaxed max-w-md mx-auto">
+                  {rsvp.attending
+                    ? "Это отличная новость! Мы будем рады вас видеть! А так же мы будем "
+                      + "рады вашем подарку! Для подарка вы можете использовать ссылку "
+                      + "или qr код ниже"
+                    : "Это грустная новость! Нам будет вас не хватать! Если вы хотите "
+                      + "восполнить ваше отсутствие небольшим подарком, то можете "
+                      + "воспользоваться qr кодом или ссылкой"}
+                </p>
+              ) : (
+                <p className="font-body text-wedding-muted">
+                  {rsvp.attending
+                    ? `Записано гостей: ${rsvp.guestCount}`
+                    : "Надеемся увидеть вас в другой раз"}
+                </p>
+              )}
+
+              {gift?.enabled && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="mt-8 space-y-6"
+                >
+                  {qrSrc ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.4, duration: 0.4 }}
+                      className="inline-block"
+                    >
+                      <div className="relative inline-block p-5 bg-white rounded-2xl shadow-sm">
+                        <img
+                          src={qrSrc}
+                          alt="QR код для перевода"
+                          width={200}
+                          height={200}
+                          className="block"
+                        />
+                        <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-white px-4 py-1 rounded-full shadow-sm">
+                          <span className="font-accent text-xs tracking-wider text-wedding-muted">
+                            Тинькофф
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ) : (
+                    <div className="flex justify-center">
+                      <div className="w-[200px] h-[200px] rounded-xl bg-wedding-gold/5 animate-pulse" />
+                    </div>
+                  )}
+
+                  <p className="font-body text-sm text-wedding-muted/70 max-w-xs mx-auto">
+                    Отсканируйте QR-код камерой телефона или нажмите кнопку ниже
+                  </p>
+
+                  {paymentUrl && (
+                    <a
+                      href={paymentUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="gold-button-filled inline-block"
+                    >
+                      Открыть ссылку
+                    </a>
+                  )}
+
+                  <p className="font-body text-xs text-wedding-muted/40">
+                    Сумма — на ваше усмотрение
+                  </p>
+                </motion.div>
+              )}
+
               <button
                 onClick={() => setSubmitted(false)}
                 className="mt-6 font-accent text-sm tracking-wider text-wedding-gold underline underline-offset-4 hover:text-wedding-sage-dark transition-colors"
@@ -454,11 +553,6 @@ export function InvitePage({ guest, existingRsvp }: Props) {
             </motion.div>
           )}
         </Section>
-
-        <Divider />
-
-        {/* ═══════ GIFT ═══════ */}
-        <GiftSection />
 
         {/* ═══════ FOOTER ═══════ */}
         <motion.footer

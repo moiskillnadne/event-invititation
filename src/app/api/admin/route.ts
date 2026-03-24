@@ -7,6 +7,7 @@ import { weddingConfig } from "@/data/wedding-config";
 interface CreateGuestBody {
   slug: string;
   names: string;
+  greeting: string | null;
   description: string;
   photo: string | null;
   maxGuests: number;
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = (await req.json()) as CreateGuestBody;
-    const { slug, names, description, photo, maxGuests } = body;
+    const { slug, names, greeting, description, photo, maxGuests } = body;
 
     if (!slug?.trim() || !names?.trim() || !description?.trim()) {
       return NextResponse.json(
@@ -92,6 +93,7 @@ export async function POST(req: NextRequest) {
       .values({
         slug: slug.trim(),
         names: names.trim(),
+        greeting: greeting?.trim() || null,
         description: description.trim(),
         photo: photo?.trim() || null,
         maxGuests: clampedMaxGuests,

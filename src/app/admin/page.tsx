@@ -17,6 +17,7 @@ interface GuestRow {
 interface GuestFormData {
   slug: string;
   names: string;
+  greeting: string;
   description: string;
   photo: string;
   maxGuests: number;
@@ -34,6 +35,7 @@ const SLUG_PATTERN = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const EMPTY_FORM: GuestFormData = {
   slug: "",
   names: "",
+  greeting: "",
   description: "",
   photo: "",
   maxGuests: 2,
@@ -129,6 +131,7 @@ export default function AdminPage() {
         body: JSON.stringify({
           slug: formData.slug.trim(),
           names: formData.names.trim(),
+          greeting: formData.greeting.trim() || null,
           description: formData.description.trim(),
           photo: formData.photo.trim() || null,
           maxGuests: formData.maxGuests,
@@ -276,6 +279,23 @@ export default function AdminPage() {
                 {formErrors.names && (
                   <p className="text-red-400 text-sm mt-1">{formErrors.names}</p>
                 )}
+              </div>
+
+              {/* Greeting */}
+              <div>
+                <label className="font-accent text-xs tracking-wider text-wedding-muted
+                  uppercase block mb-1">
+                  Приветствие (необязательно)
+                </label>
+                <input
+                  type="text"
+                  value={formData.greeting}
+                  onChange={(e) =>
+                    setFormData((prev) => ({ ...prev, greeting: e.target.value }))
+                  }
+                  placeholder="Дорогие / Дорогой (по умолчанию)"
+                  className={INPUT_CLASS}
+                />
               </div>
 
               {/* Slug */}
