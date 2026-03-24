@@ -219,7 +219,7 @@ export function InvitePage({ guest, existingRsvp }: Props) {
           )}
 
           <h2 className="font-display text-3xl md:text-4xl font-light mb-6">
-            Дорог{guest.names.length > 20 ? "ие" : "ой"}{" "}
+            Дорог{/ и |,/.test(guest.names) ? "ие" : "ой"}{" "}
             <span className="text-wedding-sage-dark">{guest.names}</span>!
           </h2>
 
